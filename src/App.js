@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import { supabase } from './supabaseClient';
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import  Home  from './views/Home' ;
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+export default function App() {
+  const [session, setSession] = useState(null);
+
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+  if (!session) {
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div>
+          <Auth
+            supabaseClient={supabase}
+            appearance={{ theme: ThemeSupa }}
+            providers={''}
+          />
+        </div>
+
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <Home />
+        <button onClick={() => supabase.auth.signOut()}>Sign out</button>
+      </div>
+    );
+  }
 }
-
-export default App;
