@@ -1,49 +1,51 @@
-import { useRef, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import  Home  from '../views/Home' ;
 
-import { useAuth } from '../contexts/Auth'
+export default function Login() {
+  const [session, setSession] = useState(null);
 
-export function Login() {
-  const emailRef = useRef()
-  const passwordRef = useRef()
 
-  const [error, setError] = useState(null)
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+  if (!session) {
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div>
+          <Auth
+            supabaseClient={supabase}
+            appearance={{ theme: ThemeSupa }}
+            providers={''}
+          />
+        </div>
 
-  const { signIn } = useAuth()
-  const history = useNavigate()
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-
-    const email = emailRef.current.value
-    const password = passwordRef.current.value
-
-    const { error } = await signIn({ email, password })
-
-    if (error) return setError(error)
-
-    history.push('/')
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <Home />
+        <button onClick={() => supabase.auth.signOut()}>Sign out</button>
+      </div>
+    );
   }
-
-  return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <div>{error && JSON.stringify(error)}</div>
-
-        <label htmlFor="input-email">Email</label>
-        <input id="input-email" type="email" ref={emailRef} />
-
-        <label htmlFor="input-password">Password</label>
-        <input id="input-password" type="password" ref={passwordRef} />
-
-        <br />
-
-        <button type="submit">Login</button>
-      </form>
-      <br />
-      <p>
-        Don't have an account? <Link to="/signup">Sign Up</Link>
-      </p>
-    </>
-  )
 }
