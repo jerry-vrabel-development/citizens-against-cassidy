@@ -1,0 +1,68 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  background-color: #333;
+  padding: 10px 50px;
+}
+
+nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: white;
+  position: relative;
+  padding: 5px 10px;
+}
+
+nav a:hover::after,
+nav a:focus::after {
+  width: 100%;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s;
+}
+
+.nav-links-enter {
+  opacity: 0.01;
+}
+
+.nav-links-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.nav-links-exit {
+  opacity: 1;
+}
+
+.nav-links-exit-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-links {
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      background-color: #444;
+      z-index: 1;
+  }
+
+  nav a {
+      margin: 10px 0;
+      display: block;
+      text-align: center;
+  }
+}
