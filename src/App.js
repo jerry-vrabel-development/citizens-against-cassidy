@@ -1,53 +1,21 @@
-import { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient';
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
-import  Home  from './views/Home' ;
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './views/Home';
+import About from './views/About';
+import Login from './views/LoginPage';
 
-
-
-export default function App() {
-  const [session, setSession] = useState(null);
-
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-  if (!session) {
-    return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <Auth
-            supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            providers={''}
-          />
-        </div>
-
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <Home />
-        <button onClick={() => supabase.auth.signOut()}>Sign out</button>
-      </div>
-    );
-  }
+function App() {
+  return (
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} exact />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        {/* Add other routes as needed */}
+      </Routes>
+    </Router>
+  );
 }
+
+export default App;
