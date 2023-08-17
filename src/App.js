@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Home from './views/Home';
 import About from './views/About';
 import Login from './views/LoginPage';
+import SignUpForm from './components/SignUpForm';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         {/* Add other routes as needed */}
       </Routes>
+      <SignUpForm />
     </Router>
   );
 }
