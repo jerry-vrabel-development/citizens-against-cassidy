@@ -1,6 +1,7 @@
 // src/components/SignUpForm.js
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
+import '../styles/SignUpForm.css';
 
 const SignUpForm = () => {
   const [email, setEmail] = useState('');
@@ -26,7 +27,7 @@ const SignUpForm = () => {
     <form onSubmit={handleSignUp}>
       <h2>Sign Up</h2>
       <div>
-        <label>Email:</label>
+        <label>Enter your email address.</label>
         <input
           type="email"
           value={email}
@@ -35,7 +36,7 @@ const SignUpForm = () => {
         />
       </div>
       <div>
-        <label>Password:</label>
+        <label>Choose a password.</label>
         <input
           type="password"
           value={password}
