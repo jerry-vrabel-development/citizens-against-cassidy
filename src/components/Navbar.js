@@ -8,7 +8,7 @@ const Navbar = () => {
 
     return (
         <nav>
-            <div onClick={() => setIsOpen(!isOpen)}>Menu</div>
+            <div className="pointer" onClick={() => setIsOpen(!isOpen)}>Menu</div>
             <CSSTransition 
                 in={isOpen}
                 timeout={300}
