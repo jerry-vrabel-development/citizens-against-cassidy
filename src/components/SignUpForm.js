@@ -27,7 +27,7 @@ const SignUpForm = () => {
     <form onSubmit={handleSignUp}>
       <h2>Sign Up</h2>
       <div>
-        <label>Enter your email address.</label>
+        <label>Enter your email address. </label>
         <input
           type="email"
           value={email}
