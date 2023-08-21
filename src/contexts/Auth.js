@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, createContext, useState, useEffect } from 'react'
 import { supabase } from './../supabaseClient';
 
-const AuthContext = React.createContext()
+export const AuthContext = createContext()
 
 export function useAuth() {
   return useContext(AuthContext)

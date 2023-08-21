@@ -4,6 +4,7 @@ import Home from './views/Home';
 import About from './views/About';
 import Login from './views/LoginPage';
 import SignUpForm from './components/SignUpForm';
+import { AuthProvider } from './contexts/Auth';
 
 function App() {
   return (
